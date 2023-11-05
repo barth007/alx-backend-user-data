@@ -68,13 +68,9 @@ def get_logger() -> logging.Logger:
 
     user_data = logging.getLogger(__name__)
     user_data.setLevel(logging.INFO)
-    formatter = RedactingFormatter(fields=(
-        "name",
-        "email",
-        "phone",
-        "ssn",
-        "password"))
+    formatter = RedactingFormatter(list(PII_FIELDS))
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)
     user_data.addHandler(stream_handler)
+    user_data.propagate = False
     return user_data
