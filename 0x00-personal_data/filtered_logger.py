@@ -15,8 +15,8 @@ a constant
 path_file = 'user_data.csv'
 with open(path_file) as csvfile:
     readerfile = csv.reader(csvfile)
-    header = tuple(next(readerfile))
-    PII_FIELDS = header[1:6]
+    header = next(readerfile)
+    PII_FIELDS = tuple(header[1:6])
 
 
 class RedactingFormatter(logging.Formatter):
