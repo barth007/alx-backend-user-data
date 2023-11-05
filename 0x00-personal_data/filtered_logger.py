@@ -5,6 +5,18 @@ filtered_logger.py
 from typing import List
 import re
 import logging
+import csv
+
+
+"""
+reading a csv file and storing it's headers in
+a constant
+"""
+path_file = 'user_data.csv'
+with open(path_file) as csvfile:
+    readerfile = csv.reader(csvfile)
+    header = tuple(next(readerfile))
+    PII_FIELDS = header[1:6]
 
 
 class RedactingFormatter(logging.Formatter):
@@ -47,3 +59,22 @@ def filter_datum(
         message = re.sub(rf"{item}.[^\{separator}]*",
                          f"{item}={redaction}", message)
     return message
+
+
+def get_logger() -> logging.Logger:
+    """
+    creating and return a logger instance
+    """
+
+    user_data = logging.getLogger(__name__)
+    user_data.setLevel(logging.INFO)
+    formatter = RedactingFormatter(fields=(
+        "name",
+        "email",
+        "phone",
+        "ssn",
+        "password"))
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    user_data.addHandler(stream_handler)
+    return user_data
