@@ -5,18 +5,9 @@ filtered_logger.py
 from typing import List
 import re
 import logging
-import csv
 
 
-"""
-reading a csv file and storing it's headers in
-a constant
-"""
-path_file = 'user_data.csv'
-with open(path_file) as csvfile:
-    readerfile = csv.reader(csvfile)
-    header = next(readerfile)
-    PII_FIELDS = tuple(header[1:6])
+PII_FIELDS = ('email', 'phone', 'ssn', 'password', 'ip')
 
 
 class RedactingFormatter(logging.Formatter):
