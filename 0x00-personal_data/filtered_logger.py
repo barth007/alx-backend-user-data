@@ -76,9 +76,9 @@ def get_db() -> connection.MySQLConnection:
 
     try:
         config = {
-            'user': getenv('PERSONAL_DATA_DB_USERNAME'),
-            'password': getenv('PERSONAL_DATA_DB_PASSWORD'),
-            'host': getenv('PERSONAL_DATA_DB_HOST'),
+            'user': getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+            'password': getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+            'host': getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
             'database': getenv('PERSONAL_DATA_DB_NAME'),
         }
         cnx = connection.MySQLConnection(**config)
