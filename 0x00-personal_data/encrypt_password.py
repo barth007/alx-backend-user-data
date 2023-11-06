@@ -6,7 +6,7 @@ encrypt_password.py
 import bcrypt
 
 
-def hash_password(password: str) -> bcrypt.hashpw:
+def hash_password(password: str) -> hashpw:
     """
     This function takes a string as argument,
     hash and return it hashed value
