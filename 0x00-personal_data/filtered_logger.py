@@ -6,7 +6,7 @@ from os import getenv
 from typing import List
 import re
 import logging
-import mysql.connector
+from mysql.connector import connection
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -69,7 +69,7 @@ def get_logger() -> logging.Logger:
     return user_data
 
 
-def get_db() -> mysql.connector.connection.MySQLConnection:
+def get_db() -> connection.MySQLConnection:
     """
     creating a connector to a database
     """
@@ -81,7 +81,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
             'host': getenv('PERSONAL_DATA_DB_HOST'),
             'database': getenv('PERSONAL_DATA_DB_NAME'),
         }
-        cnx = mysql.connector.connect(**config)
+        cnx = connection.MySQLConnection(**config)
         return cnx
     except mysql.connector.Error as err:
         print(f"Error: {err}")
