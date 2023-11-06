@@ -2,11 +2,10 @@
 """
 encrypt_password.py
 """
-from typing import Union
 import bcrypt
 
 
-def hash_password(password: str) -> Union[bytes, str]:
+def hash_password(password: str) -> bytes:
     """
     This function takes a string as argument,
     hash and return it hashed value
