@@ -6,12 +6,11 @@ encrypt_password.py
 import bcrypt
 
 
-def hash_password(password: str) -> hashpw:
+def hash_password(password: str) -> bcrypt.gensalt:
     """
     This function takes a string as argument,
     hash and return it hashed value
     """
 
-    passw = b"{password}"
-    hashed = bcrypt.hashpw(passw, bcrypt.gensalt(14))
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
     return hashed
