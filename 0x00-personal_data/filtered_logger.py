@@ -2,9 +2,11 @@
 """
 filtered_logger.py
 """
+from os import getenv
 from typing import List
 import re
 import logging
+import mysql.connector
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -65,3 +67,22 @@ def get_logger() -> logging.Logger:
     user_data.addHandler(stream_handler)
     user_data.propagate = False
     return user_data
+
+
+def get_db():
+    """
+    creating a connector to a database
+    """
+
+    try:
+        config = {
+            'user': getenv('PERSONAL_DATA_DB_USERNAME'),
+            'password': getenv('PERSONAL_DATA_DB_PASSWORD'),
+            'host': getenv('PERSONAL_DATA_DB_HOST'),
+            'database': getenv('PERSONAL_DATA_DB_NAME'),
+        }
+        cnx = mysql.connector.connect(**config)
+        return cnx
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
