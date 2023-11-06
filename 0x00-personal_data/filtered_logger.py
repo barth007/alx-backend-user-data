@@ -2,11 +2,11 @@
 """
 filtered_logger.py
 """
-from os import getenv
+from os import environ
 from typing import List
 import re
 import logging
-from mysql.connector import connection
+import mysql.connector
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -69,20 +69,62 @@ def get_logger() -> logging.Logger:
     return user_data
 
 
-def get_db() -> connection.MySQLConnection:
+def get_db() -> mysql.connector.connect:
     """
     creating a connector to a database
     """
 
     try:
         config = {
-            'user': getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
-            'password': getenv('PERSONAL_DATA_DB_PASSWORD', ''),
-            'host': getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-            'database': getenv('PERSONAL_DATA_DB_NAME'),
+            'user': environ.get('PERSONAL_DATA_DB_USERNAME', 'root'),
+            'password': environ.get('PERSONAL_DATA_DB_PASSWORD', ''),
+            'host': environ.get('PERSONAL_DATA_DB_HOST', 'localhost'),
+            'database': environ.get('PERSONAL_DATA_DB_NAME'),
         }
-        cnx = connection.MySQLConnection(**config)
+        cnx = mysql.connector.connect(**config)
         return cnx
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return None
+
+
+def main() -> None:
+    """
+    calling a logger for a retrieve data
+    """
+
+    db = get_db()
+    cursor = db.cursor()
+    query = ("SELECT * FROM users")
+
+    cursor.execute(query)
+    result = cursor.fetchall()
+    logger = get_logger()
+    message = 'name={}; email={}; phone={}; ssn={}; password={}; ip={};\
+            last_login={}; user_agent={};'
+    for (
+            name,
+            email,
+            phone,
+            ssn,
+            password,
+            ip,
+            last_login,
+            user_agent
+            ) in result:
+        logger.info(message.format(
+                        name,
+                        email,
+                        phone,
+                        ssn,
+                        password,
+                        ip,
+                        last_login,
+                        user_agent
+                    ))
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
