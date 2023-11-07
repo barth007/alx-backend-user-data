@@ -23,7 +23,6 @@ class Auth():
             if searched_path.endswith('/') and searched_path == path:
                     return False
         return False
-
     def authorization_header(self, request=None) -> str:
         """authorized header
         """
