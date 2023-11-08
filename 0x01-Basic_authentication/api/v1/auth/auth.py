@@ -20,9 +20,11 @@ class Auth():
         elif path is None:
             return True
         for searched_path in excluded_paths:
-            if searched_path.endswith('/') and searched_path == path:
-                    return False
-        return False
+            if searched_path == path or (searched_path.endswith('/')
+               and searched_path == path + '/'):
+                return False
+        return True
+
     def authorization_header(self, request=None) -> str:
         """authorized header
         """
