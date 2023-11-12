@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic Auth Model
+Basic Auth Module
 """
 from api.v1.auth.auth import Auth
 from flask import request, abort
