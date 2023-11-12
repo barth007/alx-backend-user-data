@@ -11,5 +11,4 @@ class SessionAuth(Auth):
     Session Auth Class
     """
 
-
     pass
