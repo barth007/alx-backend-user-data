@@ -3,6 +3,7 @@
 Session Auth Module
 """
 from api.v1.auth.auth import Auth
+from models.user import User
 from flask import request, abort
 import uuid
 
@@ -44,3 +45,15 @@ class SessionAuth(Auth):
         else:
             user_id = self.user_id_by_session_id.get(session_id)
             return user_id
+
+    def current_user(self, request=None):
+        """"
+        retrieving a user
+        """
+ 
+        if request is None:
+            return None
+        cookie_value = self.session_cookie(request)
+        get_session_id = User.get(cookie_value)
+        user_id = self.user_id_for_session_id(get_session_id)
+        return user_id

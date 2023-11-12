@@ -99,7 +99,6 @@ class BasicAuth(Auth):
 
         auth = Auth()
         authorization = auth.authorization_header(request)
-        print(authorization)
         extract_base64 = self.extract_base64_authorization_header(
             authorization
             )
