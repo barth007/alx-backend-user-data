@@ -52,6 +52,5 @@ class Auth():
             return None
         else:
             env_value = environ.get("SESSION_NAME")
-            if env_value == '_my_session_id':
-                cookie_data = request.cookies.get(env_value)
+            cookie_data = request.cookies.get(env_value)
             return cookie_data
