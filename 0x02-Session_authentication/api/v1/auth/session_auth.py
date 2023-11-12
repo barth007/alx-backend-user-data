@@ -58,6 +58,7 @@ class SessionAuth(Auth):
             return None
         # using the cookie value in to retrieve the user_id
         user_id = self.user_id_for_session_id(cookie_value)
+        print(f"{cookie_value}: {user_id}")
         if user_id is None:
             return None
         user = User.get(user_id)
