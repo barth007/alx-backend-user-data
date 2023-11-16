@@ -34,13 +34,7 @@ class DB:
         """
         added users
         """
-        if not email or not hashed_password:
-            return
-        try:
-            user = User(email=email, hashed_password=hashed_password)
-            self._session.add(user)
-            self._session.commit()
-            return user
-        except IntegrityError as e:
-            self._session.rollback()
-            raise e
+        user = User(email=email, hashed_password=hashed_password)
+        self._session.add(user)
+        self._session.commit()
+        return user
