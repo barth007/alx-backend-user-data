@@ -34,7 +34,7 @@ class DB:
         """
         added users
         """
-        if email is None or hashed_password is None:
+        if not email or not hashed_password:
             return
         try:
             user = User(email=email, hashed_password=hashed_password)
