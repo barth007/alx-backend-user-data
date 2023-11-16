@@ -6,8 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
-from user import User
-from user import Base
+from user import Base, User
 
 
 class DB:
@@ -35,9 +34,13 @@ class DB:
         """
         added users
         """
-        if email is None and hashed_password is None:
+        if email is None or hashed_password is None:
             return
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
-        return user
+        try:
+            user = User(email=email, hashed_password=hashed_password)
+            self._session.add(user)
+            self._session.commit()
+            return user
+        except IntegrityError as e:
+            self._session.rollback()
+            raise e
