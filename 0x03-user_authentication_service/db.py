@@ -74,8 +74,6 @@ class DB:
         Return:
         - User: updated user
         """
-        if user_id is None:
-            return
         try:
             user = self.find_user_by(id=user_id)
             for attr, value in kwargs.items():
