@@ -18,7 +18,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -51,7 +51,7 @@ class DB:
         """Find a user by abitary key argument
 
         Args:
-        - **kwargs (str): key, values pair
+        - **kwargs: key, values pair
 
         Returns:
         - User: found user
@@ -62,5 +62,27 @@ class DB:
             one_user = query.one()
             return one_user
         except(NoResultFound, InvalidRequestError) as e:
+            self._session.rollback()
+            raise e
+
+    def update_user(self, user_id: int, **kwargs) -> User:
+        """update users by id
+
+        Args:
+        - user_id (int): user id
+        - kwargs: key, value pairs
+        Return:
+        - User: updated user
+        """
+        if user_id is None:
+            return
+        try:
+            user = self.find_user_by(id=user_id)
+            for attr, value in kwargs.items():
+                setattr(user, attr, value)
+                # user.attr = value
+            self._session.add(user)
+            self._session.commit()
+        except ValueError as e:
             self._session.rollback()
             raise e
