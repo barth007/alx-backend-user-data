@@ -2,6 +2,9 @@
 """
 Auth module
 """
+from db import DB
+from user import User
+from sqlalchemy.orm.exc import NoResultFound
 import bcrypt
 
 
@@ -16,12 +19,34 @@ def _hash_password(password: str) -> bytes:
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
     return hashed
 
-from db import DB
-
 
 class Auth:
     """Auth class to interact with the authentication database.
     """
 
     def __init__(self):
+        """Instanciating the DB() Class"""
         self._db = DB()
+
+    def register_user(self, email: str, password: str) -> User:
+        """registering a new user to the database
+
+        Args:
+        - email (str): user email
+        - password (str): user password
+
+        Return:
+        - User object
+        """
+        if not email or not isinstance(email, str):
+            return
+        if not password or not isinstance(password, str):
+            return
+        try:
+            user = self._db.find_user_by(email=email)
+            print(f"User {email} already exits")
+            raise ValueError
+        except NoResultFound:
+            hashed_password = _hash_password(password)
+            new_user = self._db.add_user(email, hashed_password)
+            return new_user
