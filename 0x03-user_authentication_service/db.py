@@ -79,7 +79,6 @@ class DB:
             for attr, value in kwargs.items():
                 setattr(user, attr, value)
                 # user.attr = value
-            self._session.add(user)
             self._session.commit()
         except ValueError as e:
             self._session.rollback()
