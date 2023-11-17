@@ -65,7 +65,7 @@ class DB:
             self._session.rollback()
             raise e
 
-    def update_user(self, user_id: int, **kwargs) -> User:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """update users by id
 
         Args:
