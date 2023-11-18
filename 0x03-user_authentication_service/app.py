@@ -19,7 +19,7 @@ def index():
 @app.route("/users", methods=["POST"], strict_slashes=False)
 def user():
     """
-    this creates a user
+    this checkes for a user
     """
     try:
         email = request.form.get('email')
