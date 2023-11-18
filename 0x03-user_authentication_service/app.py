@@ -26,7 +26,7 @@ def user():
         password = request.form.get('password')
         if not email or not password:
             return jsonify({"message": "Email and Password are required"}), 400
-        AUTH.register_user(email, password)
+        AUTH.register_user(email=email, password=password)
         return jsonify({"email": email, "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
