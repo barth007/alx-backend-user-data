@@ -40,7 +40,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            raise ValueError (f"User {email} already exits")
+            raise ValueError(f"User {email} already exits")
         except NoResultFound:
             hashed_password = _hash_password(password)
             new_user = self._db.add_user(email, hashed_password)
