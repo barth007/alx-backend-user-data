@@ -38,14 +38,9 @@ class Auth:
         Return:
         - User object
         """
-        if not email or not isinstance(email, str):
-            return
-        if not password or not isinstance(password, str):
-            return
         try:
             user = self._db.find_user_by(email=email)
-            print(f"User {email} already exits")
-            raise ValueError
+            raise ValueError (f"User {email} already exits")
         except NoResultFound:
             hashed_password = _hash_password(password)
             new_user = self._db.add_user(email, hashed_password)

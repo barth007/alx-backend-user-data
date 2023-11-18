@@ -15,6 +15,13 @@ def index():
     payload = {"message": "Bienvenue"}
     return jsonify(payload)
 
+@app.route("/users/<email>/<password>", methods=["POST"], strict_slashes=False)
+def user(email: str, password: str):
+   
+
+
 
 if __name__ == "__main__":
+    from auth import Auth
+    AUTH = Auth()
     app.run(host="0.0.0.0", port="5000")
