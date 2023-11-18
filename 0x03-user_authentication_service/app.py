@@ -30,7 +30,7 @@ def user():
             return jsonify({"message": "Email and Password are required"}), 400
         AUTH.register_user(email=email, password=password)
         return jsonify({"email": email, "message": "user created"}), 201
-    except ValueError:
+    except Exception:
         return jsonify({"message": "email already registered"}), 400
 
 
