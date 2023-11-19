@@ -23,9 +23,9 @@ def user():
     """
     this checkes for a user
     """
-    email = request.form.get('email')
-    password = request.form.get('password')
     try:
+        email = request.form.get('email')
+        password = request.form.get('password')
         AUTH.register_user(email=email, password=password)
         return jsonify({"email": email, "message": "user created"}), 201
     except Exception:
