@@ -41,11 +41,12 @@ def login():
     try:
         email = request.form.get('email')
         password = request.form.get('password')
-        check = AUTH.valid_login(email, password)
-        session = AUTH.create_session(email)
-        response = jsonify({"email": email, "message": "logged in"})
-        response.set_cookie('session_id', session)
-        return response, 200
+        if AUTH.valid_login(email, password):
+            session = AUTH.create_session(email)
+            response = jsonify({"email": email, "message": "logged in"})
+            response.set_cookie('session_id', session)
+            return response, 200
+        
     except NoResultFound:
         abort(401)
 
