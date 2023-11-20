@@ -84,7 +84,7 @@ class Auth:
             id = user.id
             self._db.update_user(id, session_id=generate_uuid)
             return user.session_id
-        except (NoResultFound or ValueError):
+        except NoResultFound:
             return None
 
     def get_user_from_session_id(session_id: str) -> Optional[User]:
@@ -100,5 +100,5 @@ class Auth:
         try:
             user = self._db.find_user_by(session_id=session_id)
             return user
-        except NoResultFound as e:
+        except NoResultFound:
             return None
