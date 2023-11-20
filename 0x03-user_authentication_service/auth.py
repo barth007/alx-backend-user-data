@@ -87,13 +87,13 @@ class Auth:
         except NoResultFound:
             return None
 
-    def get_user_from_session_id(session_id: str) -> Optional[User]:
+    def get_user_from_session_id(self, session_id: str) -> Optional[User]:
         """fetching users by session_id
 
         Arg:
         - session_id
         Return:
-        - return User or None
+        - a User or None
         """
         if not session_id or session is None:
             return None
@@ -102,3 +102,17 @@ class Auth:
             return user
         except NoResultFound:
             return None
+
+    def destroy_session(self, user_id: int) -> None:
+        """destroying session from db
+
+        Arg:
+        - user_id (int)
+        Return:
+        - None
+        """
+        try:
+            self._db.update_user(user_id, session_id=None)
+            return None
+        except ValueError as e:
+            raise e
